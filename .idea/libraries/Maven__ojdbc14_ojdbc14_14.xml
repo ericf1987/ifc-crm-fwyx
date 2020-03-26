@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: ojdbc14:ojdbc14:14">
     <CLASSES>
-      <root url="jar://D:/apache-maven-repos/ojdbc14/ojdbc14/14/ojdbc14-14.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/ojdbc14/ojdbc14/14/ojdbc14-14.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://D:/apache-maven-repos/ojdbc14/ojdbc14/14/ojdbc14-14-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/ojdbc14/ojdbc14/14/ojdbc14-14-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://D:/apache-maven-repos/ojdbc14/ojdbc14/14/ojdbc14-14-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/ojdbc14/ojdbc14/14/ojdbc14-14-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
