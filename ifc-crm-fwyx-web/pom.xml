@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.1.5.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.foundersc.ifc</groupId>
+	<artifactId>ifc-crm-fwyx-web</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>ifc-crm-fwyx-web</name>
+	<description>Demo project for Spring Boot</description>
+
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+
+	<dependencies>
+		<!-- Web 依赖 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!-- 模板引擎 Thymeleaf 依赖 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
+		<!-- 测试依赖 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.foundersc.ifc</groupId>
+			<artifactId>ifc-crm-fwyx-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.foundersc.ifc</groupId>
+			<artifactId>ifc-crm-fwyx-impl</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+
+		<plugins>
+
+			<!-- 手动配置编译插件参数 -->
+			<plugin>
+				<!-- 指定maven编译的jdk版本,如果不指定,maven3默认用jdk 1.5 maven2默认用jdk1.3 -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<!-- 一般而言，target与source是保持一致的，但是，有时候为了让程序能在其他版本的jdk中运行(对于低版本目标jdk，源代码中不能使用低版本jdk中不支持的语法)，会存在target不同于source的情况 -->
+					<source>1.8</source> <!-- 源代码使用的JDK版本 -->
+					<target>1.8</target> <!-- 需要生成的目标class文件的编译版本 -->
+					<encoding>UTF-8</encoding><!-- 字符集编码 -->
+					<verbose>true</verbose>
+					<showWarnings>true</showWarnings>
+					<fork>true</fork><!-- 要使compilerVersion标签生效，还需要将fork设为true，用于明确表示编译版本配置的可用 -->
+					<executable><!-- path-to-javac --></executable><!-- 使用指定的javac命令，例如：<executable>${JAVA_1_4_HOME}/bin/javac</executable> -->
+					<compilerVersion>1.8</compilerVersion><!-- 指定插件将使用的编译器的版本 -->
+					<meminitial>128m</meminitial><!-- 编译器使用的初始内存 -->
+					<maxmem>512m</maxmem><!-- 编译器使用的最大内存 -->
+					<!--<compilerArgument>-verbose -bootclasspath ${java.home}\lib\rt.jar</compilerArgument>&lt;!&ndash; 这个选项用来传递编译器自身不包含但是却支持的参数选项 &ndash;&gt;-->
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<!-- 剔除spring-boot打包的org和BOOT-INF文件夹(用于子模块打包) -->
+					<skip>true</skip>
+					<!-- 指定该jar包启动时的主类[建议] -->
+					<mainClass>com.foundersc.ifc.base.FwyxImplApplication</mainClass>
+					<layout>ZIP</layout>
+					<includes>
+						<!-- 排除第三方依赖jar(只保留本项目的jar) -->
+						<include>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>${project.artifactId}</artifactId>
+						</include>
+					</includes>
+				</configuration>
+			</plugin>
+			<!-- 打源码包 漏了他就不打包sources.jar了-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<configuration>
+					<attach>true</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>compile</phase>
+						<goals>
+							<!--<goal>jar-no-fork</goal>-->
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- 把项目依赖的第三方包打包在target/lib下 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+							<excludeTransitive>false</excludeTransitive>
+							<stripVersion>false</stripVersion>
+							<includeScope>runtime</includeScope>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- 打jar包配置 控制在target目录生成的项目jar包中包含的文件-->
+			<!--<plugin>-->
+				<!--<groupId>org.apache.maven.plugins</groupId>-->
+				<!--<artifactId>maven-jar-plugin</artifactId>-->
+				<!--<version>2.4</version>-->
+				<!--<configuration>-->
+					<!--&lt;!&ndash; 源码和资源文件分离 &ndash;&gt;-->
+					<!--<excludes>-->
+						<!--<exclude>**/*.properties</exclude>-->
+						<!--<exclude>**/*.xml</exclude>-->
+					<!--</excludes>-->
+				<!--</configuration>-->
+			<!--</plugin>-->
+			<!-- 拷贝相关资源文件到 classes目录 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-xmls</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<!-- 资源文件输出路径 -->
+							<outputDirectory>${project.build.directory}/classes</outputDirectory>
+							<resources>
+								<resource>
+									<!-- 资源文件来源 -->
+									<directory>${basedir}/src/main/resources</directory>
+									<includes>
+										<include>**/*.xml</include>
+										<include>*.xml</include>
+										<include>**/*.yml</include>
+										<include>*.yml</include>
+										<include>*.properties</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+		</plugins>
+
+		<!--<resources>-->
+		<!--&lt;!&ndash; 把src/main/resources目录下所有的文件拷贝到conf目录中 &ndash;&gt;-->
+		<!--<resource>-->
+		<!--<directory>src/main/resources</directory>-->
+		<!--<targetPath>${project.build.directory}/conf</targetPath>-->
+		<!--<includes>-->
+		<!--<include>mapper/**/*.xml</include>-->
+		<!--<include>static/**</include>-->
+		<!--<include>templates/**</include>-->
+		<!--<include>*.yml</include>-->
+		<!--<include>*.properties</include>-->
+		<!--<include>*.xml</include>-->
+		<!--<include>*.txt</include>-->
+		<!--</includes>-->
+		<!--</resource>-->
+		<!--</resources>-->
+	</build>
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<project.environment>dev</project.environment>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<project.environment>test</project.environment>
+			</properties>
+		</profile>
+		<profile>
+			<id>prev</id>
+			<properties>
+				<project.environment>prev</project.environment>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<project.environment>prod</project.environment>
+			</properties>
+		</profile>
+	</profiles>
+
+</project>
