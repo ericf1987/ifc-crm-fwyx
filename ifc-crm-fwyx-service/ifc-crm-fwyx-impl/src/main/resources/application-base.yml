@@ -1,0 +1,48 @@
+#启动端口
+server:
+  port: 9080
+
+## 数据源信息
+base:
+  datasource:
+    url: jdbc:oracle:thin:@28.163.1.28:1521:kfdb1
+    username: kf
+    password: zxcvbnm
+    driver: oracle.jdbc.OracleDriver
+
+## Mybatis 配置
+mybatis:
+  typeAliasesPackage: com.foundersc.ifc
+  mapperLocations: classpath*:mapper/**/*.xml
+  configLocation:
+    cacheEnabled: true
+    lazyLoadingEnabled: true
+    aggressiveLazyLoading: true
+    multipleResultSetsEnabled: true
+    useColumnLabel: true
+    useGeneratedKeys: false
+    autoMappingBehavior: PARTIAL
+    defaultExecutorType: SIMPLE
+    mapUnderscoreToCamelCase: true
+    localCacheScope: SESSION
+    jdbcTypeForNull: NULL
+
+## Actuator监控端口
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh,env,bus-refresh
+  endpoint:
+    health:
+      show-details: always
+    info:
+      enabled: true
+
+
+spring:
+  profiles:
+    active: @project.environment@
+  devtools:
+    restart:
+      enables: true
