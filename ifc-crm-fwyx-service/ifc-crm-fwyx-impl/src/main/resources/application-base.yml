@@ -39,10 +39,9 @@ management:
     info:
       enabled: true
 
-
 spring:
+  application:
+    name: ifc-crm-fwyx-impl
   profiles:
     active: @project.environment@
-  devtools:
-    restart:
-      enables: true
+
