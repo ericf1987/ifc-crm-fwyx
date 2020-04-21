@@ -90,21 +90,24 @@ public class BaseDataSourceConfig {
         return factoryBean.getObject();
     }
 
-    @Bean
-    public PageHelper pageHelper() {
-        log.info("MyBatis分页插件PageHelper");
-        //分页插件
-        PageHelper pageHelper = new PageHelper();
-        Properties properties = new Properties();
-        properties.setProperty("offsetAsPageNum", "true");
-        properties.setProperty("rowBoundsWithCount", "true");
-        properties.setProperty("reasonable", "true");
-        properties.setProperty("supportMethodsArguments", "true");
-        properties.setProperty("returnPageInfo", "check");
-        properties.setProperty("params", "count=countSql");
-        pageHelper.setProperties(properties);
-        return pageHelper;
-    }
+//    @Bean
+//    public PageHelper pageHelper() {
+//        log.info("MyBatis分页插件PageHelper");
+//        //分页插件
+//        PageHelper pageHelper = new PageHelper();
+//        Properties properties = new Properties();
+//        properties.setProperty("offsetAsPageNum", "true");
+//        properties.setProperty("rowBoundsWithCount", "true");
+//        properties.setProperty("reasonable", "true");
+//        properties.setProperty("supportMethodsArguments", "true");
+//        properties.setProperty("returnPageInfo", "check");
+//        properties.setProperty("params", "count=countSql");
+//        pageHelper.setProperties(properties);
+//
+//        log.info("MyBatis分页插件PageHelper -> {}", pageHelper);
+//
+//        return pageHelper;
+//    }
 
 }
 
