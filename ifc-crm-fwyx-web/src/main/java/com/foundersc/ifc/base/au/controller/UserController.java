@@ -2,7 +2,6 @@ package com.foundersc.ifc.base.au.controller;
 
 import com.foundersc.ifc.base.au.model.UserPO;
 import com.foundersc.ifc.base.au.service.IUserService;
-import com.foundersc.ifc.crm.tools.common.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +27,9 @@ public class UserController {
 
     @ApiOperation(value = "获取用户列表")
     @RequestMapping(value="/list", method = RequestMethod.GET)
-    public Response getUserList(){
+    public List<UserPO> getUserList(){
         List<UserPO> userList = userService.getUserList();
-        return Response.success().data(userList);
+        return userList;
     }
 
 }

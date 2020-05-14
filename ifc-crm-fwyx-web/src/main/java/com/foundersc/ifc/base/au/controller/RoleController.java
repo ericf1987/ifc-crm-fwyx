@@ -2,7 +2,6 @@ package com.foundersc.ifc.base.au.controller;
 
 import com.foundersc.ifc.base.au.model.Role;
 import com.foundersc.ifc.base.au.service.IRoleService;
-import com.foundersc.ifc.crm.tools.common.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,11 +27,10 @@ public class RoleController {
 
     @ApiOperation(value = "获取角色列表")
     @RequestMapping(value = "/getRoles", method = RequestMethod.GET)
-    public Response getRoles(){
+    public List<Role> getRoles(){
         List<Role> roles = roleService.queryRoleList();
-        ArrayList<Role> result = new ArrayList<>(roles);
-        result.add(new Role("200", "角色200"));
-        return Response.success().data(result);
+        return roles;
+
     }
 
 
